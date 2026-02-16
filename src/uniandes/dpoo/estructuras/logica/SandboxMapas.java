@@ -1,9 +1,11 @@
 package uniandes.dpoo.estructuras.logica;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * Esta clase tiene un conjunto de métodos para practicar operaciones sobre mapas.
@@ -41,7 +43,10 @@ public class SandboxMapas
      */
     public List<String> getValoresComoLista( )
     {
-        return null;
+        List<String> lista = new java.util.ArrayList<>(this.mapaCadenas.values());
+        Collections.sort(lista);
+        
+        return lista;
     }
 
     /**
@@ -50,7 +55,10 @@ public class SandboxMapas
      */
     public List<String> getLlavesComoListaInvertida( )
     {
-        return null;
+    	List<String> lista = new java.util.ArrayList<>(this.mapaCadenas.keySet());
+    	Collections.sort(lista, Collections.reverseOrder());
+    	
+        return lista;
     }
 
     /**
@@ -61,7 +69,17 @@ public class SandboxMapas
      */
     public String getPrimera( )
     {
-        return null;
+    	if (this.mapaCadenas.isEmpty()) return null;
+    	
+    	String menor = null;
+    	
+    	for (String llave: this.mapaCadenas.keySet()) {
+    		if (menor == null || llave.compareTo(menor)<0) menor = llave; 
+    		
+    	}
+    			
+    			
+        return menor;
     }
 
     /**
@@ -72,7 +90,16 @@ public class SandboxMapas
      */
     public String getUltima( )
     {
-        return null;
+    	if (this.mapaCadenas.isEmpty()) return null;
+    	String mayor = null;
+    	
+    	for (String valor: this.mapaCadenas.values()) {
+    		if (mayor == null || valor.compareTo(mayor)>0) mayor = valor;
+    		
+    	}
+    	
+    	
+        return mayor;
     }
 
     /**
@@ -83,7 +110,13 @@ public class SandboxMapas
      */
     public Collection<String> getLlaves( )
     {
-        return null;
+    	List<String> lista = new java.util.ArrayList<>();
+    	for (String llave: this.mapaCadenas.keySet()) {
+    		lista.add(llave.toUpperCase());
+    		
+    	}
+    	
+        return lista;
     }
 
     /**
@@ -92,7 +125,8 @@ public class SandboxMapas
      */
     public int getCantidadCadenasDiferentes( )
     {
-        return -1;
+        
+    	return new java.util.HashSet<>(this.mapaCadenas.values()).size();
     }
 
     /**
@@ -104,7 +138,8 @@ public class SandboxMapas
      */
     public void agregarCadena( String cadena )
     {
-
+    	String llave = new StringBuilder(cadena).reverse().toString();
+    	this.mapaCadenas.put(llave, cadena);
     }
 
     /**
@@ -113,7 +148,7 @@ public class SandboxMapas
      */
     public void eliminarCadenaConLLave( String llave )
     {
-
+    	this.mapaCadenas.remove(llave);
     }
 
     /**
@@ -122,7 +157,18 @@ public class SandboxMapas
      */
     public void eliminarCadenaConValor( String valor )
     {
-
+    	
+    	String eliminar = null;
+    	
+    	for (Map.Entry<String, String> entrada : this.mapaCadenas.entrySet()) {
+    		if (entrada.getValue().equals(valor)) {
+    			eliminar = entrada.getKey();
+    			break;
+    		}
+    		
+    	}
+    	
+    	if (eliminar != null) this.mapaCadenas.remove(eliminar);
     }
 
     /**
@@ -133,6 +179,13 @@ public class SandboxMapas
      */
     public void reiniciarMapaCadenas( List<Object> objetos )
     {
+    	
+    	this.mapaCadenas.clear();
+    	for (Object objeto: objetos) {
+    		String valor = objeto.toString();
+    		String llave = new StringBuilder(valor).reverse().toString();
+    		this.mapaCadenas.put(llave, valor);
+    	}
 
     }
 
@@ -141,7 +194,19 @@ public class SandboxMapas
      */
     public void volverMayusculas( )
     {
-
+    	Map<String,String> nuevo = new HashMap<>();
+    	
+    	
+    	for(Map.Entry<String, String> entrada: this.mapaCadenas.entrySet()) {
+    		
+    		String llave = entrada.getKey();
+    		String llavenueva = llave.toUpperCase();
+    		String valor = entrada.getValue();
+    		
+    		nuevo.put(llavenueva, valor);
+    		
+    	}
+    	this.mapaCadenas = nuevo;
     }
 
     /**
@@ -151,7 +216,12 @@ public class SandboxMapas
      */
     public boolean compararValores( String[] otroArreglo )
     {
-        return false;
+    	if (otroArreglo == null ) return false;
+    	for (String elemento: otroArreglo) {
+    		if (! this.mapaCadenas.values().contains(elemento))return false;
+    		
+    	}
+        return true;
     }
 
 }
